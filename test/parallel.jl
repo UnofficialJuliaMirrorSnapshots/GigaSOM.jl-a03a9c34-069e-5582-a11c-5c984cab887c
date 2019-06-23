@@ -9,11 +9,33 @@ p = addprocs(2)
 # only use lineage_markers for clustering
 cc = map(Symbol, lineage_markers)
 df_som = daf.fcstable[:,cc]
+
+# concatenate the dataset for performance testing
 # df_som = vcat(df_som, df_som)
+n = 0
+for i in 1:n
+    global df_som
+    df_som = vcat(df_som, df_som)
+end
 
-som2 = initSOM_parallel(df_som, 10, 10)
+som2 = initGigaSOM(df_som, 10, 10)
 
-@time som2 = trainSOM_parallel(som2, df_som, size(df_som)[1], epochs = 10)
+@testset "GigaSOM initialisation" begin
+    @testset "Type test" begin
+        @test typeof(som2) == GigaSOM.Som
+        @test som2.toroidal == false
+        @test typeof(som2.grid) == Array{Float64,2}
+    end
+    @testset "Dimensions Test" begin
+        @test size(som2.codes) == (100,10)
+        @test som2.xdim == 10
+        @test som2.ydim == 10
+        @test som2.nCodes == 100
+    end
+
+end
+
+@time som2 = trainGigaSOM(som2, df_som, epochs = 10, r = 6.0)
 
 mywinners = mapToSOM(som2, df_som)
 CSV.write("cell_clustering_som.csv", mywinners)

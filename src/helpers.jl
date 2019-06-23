@@ -27,7 +27,7 @@ end
 Take n random rows from a DataFrame with replacement.
 """
 function rowSample(df::DataFrame, n::Int)
-
+    
     return df[rand(1:nrow(df), n),:]
 end
 
