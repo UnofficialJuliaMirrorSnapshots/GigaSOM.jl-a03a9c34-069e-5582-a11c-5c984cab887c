@@ -9,11 +9,15 @@ docs/site/
 /docs/Manifest.toml
 *.ipynb
 *.csv
-!ref_batch_df_codes.csv
-!ref_batch_mywinners.csv
+!refBatchDfCodes.csv
+!refBatchWinners.csv
+!refParallelDfCodes.csv
+!refParallelWinners.csv
 *.py
 __pycache__
 data/
 *.fcs
+*.orig
 data/
 test/data/
+test/genData/
